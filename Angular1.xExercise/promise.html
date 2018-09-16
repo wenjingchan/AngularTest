@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>promise</title>
+	<style type="text/css">
+		div{
+			border:1px solid #ccc;
+			margin:20px;
+			padding:10px;
+		}
+	</style>
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+	<div>{{result}}</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		var app=angular.module("myapp",[]);
+		/**
+		 * 把服务比作儿子，老爸作为逻辑控制，使用儿子提供的服务
+		 * https://www.cnblogs.com/ZengYunChun/p/6438330.html
+		 * Angular中的$q的形象解释及深入用法
+		 */
+		//用factory()来创建一个服务
+		app.factory("dataService",function($http,$q){
+			return {
+				getJson:function(){
+					return $http.get("data/books.json").then(function(resp){
+						if(typeof resp.data==="object")
+							return resp.data;
+						else
+							return $q.reject(resp.data);
+					},function(resp){
+						return $q.reject(resp.data);
+					});
+				}
+			};
+		});
+		/**使用Angular的then()指定控制器针对每种结果的对策。then()函数接受两个函数作为参数：一个许诺对现时执行，一个在无法对现时执行。 
+		*与service.html的方法对比,promise是一种异步处理模式
+		*/
+		app.controller("myCtrl",function($scope,dataService){
+			dataService.getJson().then(function(data){
+				$scope.result=data;
+			},function(error){
+				$scope.result=error;
+			});
+		});
+	</script>
+</body>
+</html>

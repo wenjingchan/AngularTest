@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ng-options && ng-repeat Test</title>
+	<style type="text/css">
+		*{
+			padding:0;
+			margin:0;
+		}
+		.container{
+			border:1px solid #999;
+			padding:20px;
+			margin:10px;
+		}
+		p{
+			margin:5px auto;
+		}
+		.click{
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body ng-app="myapp" >
+	<div class="container" ng-init="mySwitch=true">
+		<p>
+			<button ng-disabled="mySwitch">Click me</button>
+		</p>
+		<p>
+			<input type="checkbox" ng-model="mySwitch"/>禁用
+		</p>
+		<p>{{mySwitch}}</p>
+	</div>
+	<div class="container" ng-init="hour=23">
+		<p>hour:<input type="text" ng-model="hour"></p>
+		<p ng-show="hour>20">when hour&gt;20 ,It will show</p>
+		<p ng-hide="hour<20"> when hour &lt; 20 ,It will hide</p>
+		<p ng-show="hour<20"> hour &lt; 20 </p>
+	</div>
+	<div class="container" ng-init="overcount=0" >
+		<p ng-mouseover="overcount=overcount+1">Mouse over count:{{overcount}}</p>
+	</div>
+	<div class="container" ng-init="clickcount=0" >
+		<p  class="click" ng-click="clickcount=clickcount+1">Mouse click count:{{clickcount}}</p>
+	</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		var app=angular.module("myapp",[]);
+
+		//ng-repeat指令
+		app.controller("evenController1",function($scope){
+			$scope.mycar=[
+				{brand:"Benz",name:"奔驰"},
+				{brand:"BMW",name:"宝马"},
+				{brand:"Audi",name:"奥迪"}
+			];
+		});
+		//ng-options指令
+		app.controller("selectController2",function($scope){
+			$scope.mycolor=["Red","Green","Blue"];
+		});
+
+		//ng-options实现数组对象循环
+		app.controller("selectController3",function($scope){
+			$scope.carcolor=[
+				{color:"Red",name:"奔驰",brand:"Benz"},
+				{color:"Green",name:"宝马",brand:"BWM"},
+				{color:"Blue",name:"奥迪",brand:"Audi"}
+			];
+		});
+
+		app.controller("selectController4",function($scope){
+			$scope.cars={
+				Benz:{color:"Red",name:"奔驰"},
+				BWM:{color:"Green",name:"宝马"},
+				Audi:{color:"Blue",name:"奥迪"}
+			};
+		});
+	</script>
+</body>
+</html>

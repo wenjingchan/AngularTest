@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>service</title>
+	<style type="text/css">
+		div{
+			border:1px solid #ccc;
+			margin:20px;
+			padding:10px;
+		}
+		span{
+			color:red;
+		}
+	</style>
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+	<div>
+		<p>url:{{pageUrl}}——<span >3秒后会有变化</span></p>
+		<p>url:{{pageUrl2}}</p>
+		<p>"{{string}}" 在使用过滤器后 "{{string | myFilter}}"</p>
+	</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		/**
+		 * 创建服务有5种方式
+		 * $provider
+		 * module.service
+		 * module.factory
+		 * module.value——返回json对象
+		 * constant
+		 */
+		var app=angular.module("myapp",[]);
+		//用module的service方法定义一个自定义服务myService
+		app.service("myService",function(){
+			this.toUpper=function(val){
+				return val.toUpperCase();
+			};
+			this.toLower=function(val){
+				return val.toLowerCase();
+			};
+		});
+
+		//在Filter中使用myservice
+		app.filter("myFilter",function(myService){
+			return function(val){
+				return myService.toUpper(val);
+			}
+		});
+
+		//在controller中使用myservice
+		app.controller("myCtrl",function(myService,$location,$scope,$timeout){
+			$scope.pageUrl=$scope.pageUrl2=$location.absUrl();
+			$scope.string="angular TEST";
+			$timeout(function(){
+				$scope.pageUrl=myService.toLower($scope.pageUrl);
+			},3000);
+		});
+		/**
+		 * $location、$timeout、$interval、$http都是angular的内置服务
+		 */
+	</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="$http的ajax的请求操作和$http服务的两种写法">
+	<title>$http中的ajax的请求操作</title>
+	<style type="text/css">
+		div{
+			border:1px solid #ccc;
+			margin:20px;
+			padding:10px;
+		}
+	</style>
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+	<div>
+		<button ng-click="loadData()">load data</button>
+	</div>
+	<div>
+		{{result}}
+		<p>statusText:{{resultStatus}}</p>
+		<p>status:{{status}}</p>
+	</div>
+	
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		var app=angular.module("myapp",[]);
+		/**
+		 * $httpProvider - $http
+		 * 使用$httpProvider(拦截器)可以修改全局Ajax配置，或者对Ajax请求进行拦截
+		 * Angular的实现中通过 httpProvider提供了一个名为interceptors的数组.这个数组接受拦截器服务注册,通过过程次的注册最终会形成拦截器链.$http服务的时候，angular会通过我们定义的拦截点进行相应的Ajax动作修改
+		 * $httpProvider暴露了那些可以拦截的点?
+			request : request方法可以实现拦截请求.
+			response : response方法可以实现拦截响应.
+			requestError : requestError方法可以实现拦截请求异常.
+			responseError : responseError方法可以实现拦截响应异常.
+		 */
+		app.config(function($httpProvider){
+			$httpProvider.interceptors.push(function(){
+				return {
+					request:function(config){
+						console.log("Resquest URL:"+config.url);
+						return config;
+					},
+					response:function(resp){
+						console.log("Response Status:"+resp.status);
+						return resp;
+					}
+				}
+			});
+		});
+		
+		 /**使用拦截器也可以先定义拦截器（像定义服务那样子定义）然后再添加
+		 这里用factory方法创建的ajaxInjector可以说是一个服务，然后再将这个服务添加到$httpProvider的拦截器链中
+		   app.factory('ajaxInjector',function(){
+		  		return {
+					request:function(config){
+						console.log("Resquest URL:"+config.url);
+						return config;
+					},
+					response:function(resp){
+						console.log("Response Status:"+resp.status);
+						return resp;
+					}
+				}
+		   });
+		*将声明的拦截器添加到$httpProvider的拦截器链中 
+		  app.config('$httpProvider',function($httpProvider){
+		  		$httpProvider.interceptors.push('ajaxInjector');
+		  });
+		*/
+
+		app.controller("myCtrl",function($scope,$http){
+			$scope.loadData=function(){
+				//$http的简单写法
+				$http.get("data/books.json").then(function(resp){
+					console.log("Data Length:"+ resp.data.length);
+					$scope.result=resp.data;
+					$scope.resultStatus=resp.statusText;
+					$scope.status=resp.status;
+				},function(resp){
+					console.log("Resp Status:"+ resp.status);
+					$scope.result=resp.statusText;
+				});
+			}
+		});
+
+		/**
+		 * $http服务的另一种写法：
+		 app.controller("myCtrl",function($scope,$http){
+		  		$http({
+		  			url:'data/books.json',
+		  			method:'GET'
+		  		}).then(function(resp){
+		  			console.log("Data Length:"+ resp.data.length);
+					$scope.result=resp.data;
+					$scope.resultStatus=resp.statusText;
+					$scope.status=resp.status;
+		  		},function(resp){
+		  			console.log("Resp Status:"+ resp.status);
+					$scope.result=resp.statusText;
+		  		});
+		  })
+		 */
+	</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>filter Test</title>
+	<style type="text/css">
+		div{
+			border:1px solid #ccc;
+			margin:20px;
+			padding:10px;
+		}
+		table{
+			//border:1px solid #ccc;
+			width:600px;
+			table-layout: fixed;
+			/*border-collapse 属性设置表格的边框是否被合并为一个单一的边框，还是象在标准的 HTML 中那样分开显示。默认值是separate*/
+			border-collapse: collapse;
+		}
+		th,td{
+			border:1px solid #ccc;line-height: 30px;text-align: center;
+		}
+		th{
+			background-color: #E8DFDF;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+	<div>
+		<p>点击表头排序</p>
+		<table>
+			<tr>
+				<th ng-click="orderByProp('name')">Name</th>
+				<th ng-click="orderByProp('country')">Country</th>
+			</tr>
+			<tr ng-repeat="user in users | orderBy : orderProp"><!--orderBy:是根据某个表达式进行排序，例如数组的每一项中的一个属性-->
+				<td>{{user.name | uppercase}}</td>
+				<td>{{user.country | myFilter}}</td>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		var app=angular.module("myapp",[]);
+		app.controller("myCtrl",function($scope){
+			$scope.users=[
+				{name:'Jani',country:'Norway'},
+			    {name:'Carl',country:'Sweden'},
+			    {name:'Margareth',country:'England'},
+			    {name:'Hege',country:'Norway'},
+			    {name:'Joe',country:'Denmark'},
+			    {name:'Gustav',country:'Sweden'},
+			    {name:'Birgit',country:'Denmark'},
+			    {name:'Mary',country:'England'},
+			    {name:'Kai',country:'Norway'}
+			];
+			$scope.orderByProp=function(o){//传入一个字符串作为参数
+				$scope.orderProp=o;
+			};
+		});
+		//自定义过滤器
+		app.filter("myFilter",function(){
+			return function(val){
+				return val+'@';
+			}
+			
+		});
+	</script>
+</body>
+</html>

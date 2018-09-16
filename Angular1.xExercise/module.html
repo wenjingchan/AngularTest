@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>module && $rootScope</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<style type="text/css">
+		*{
+			padding:0;
+			margin:0;
+		}
+		.container{
+			border:1px solid #999;
+			padding:20px;
+			margin:10px;
+		}
+	</style>
+</head>
+<body ng-app="createModule">
+	<div ng-controller="createController" class="container">
+		<div class="form-group">
+			<label>firstName:</label>
+			<input ng-model="firstName">
+		</div>
+		<div class="form-group">
+			<label>lastName:</label>
+			<input ng-model="lastName">
+		</div>
+		<div class="form-group">
+			<input type="submit" class="btn" ng-click="sayName()" value="提交">
+		</div>
+		<p>{{greeting}}</p>
+	</div>
+	<div class="container" my-directive></div>
+
+	<div class="container">
+		<P>根作用域$rootScope:根作用域$rootscope作用域整个应用，可以在该应用的gecontroller中使用</P>
+		<div class="form-group">
+			<label>firstName:</label>
+			{{firstName}}
+		</div>
+		<div class="form-group">
+			<label>lastName:</label>
+			{{lastName}}
+		</div>
+		<p>{{greeting}}</p>
+	</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		var app=angular.module("createModule",[]);
+		//根作用域$rootscope作用域整个应用，可以在该应用的gecontroller中使用
+		app.run(function($rootScope){
+			$rootScope.firstName="Uranus";
+			$rootScope.lastName="chan";
+			$rootScope.greeting=$rootScope.firstName+" "+$rootScope.lastName;
+		});
+
+		app.controller("createController",function($scope){
+			$scope.firstName="chen";
+			$scope.lastName="wenjing";
+			$scope.greeting=$scope.firstName+" "+$scope.lastName;
+			
+			$scope.sayName=function(){
+				$scope.greeting=$scope.firstName+" "+$scope.lastName;
+			}
+
+		});
+		//添加一个自定义指令,有时用于表单认证
+		app.directive("myDirective",function(){
+			return { template:"I was created in directive constructor!" };
+		});
+	</script>
+</body>
+</html>

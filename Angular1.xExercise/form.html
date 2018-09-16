@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html  >
+<head>
+	<meta charset="utf-8">
+	<title>formValid</title>
+	<style type="text/css">
+		div{
+			border:1px solid #ccc;
+			padding:15px 20px;
+			margin:10px;
+		}
+		input.ng-invalid{
+			background-color:yellow;
+		}
+	</style>
+</head>
+<body ng-app="formApp"> 
+	<div>
+		<form name="myForm">
+			<label>Pick a Car:</label>
+			<p><input type="radio" name="car" ng-model="mycar" value="Benz" />奔驰</p>
+			<p><input type="radio" name="car" ng-model="mycar" value="Bao" />宝马</p>
+			<p><input type="radio" name="car" ng-model="mycar" value="Aodi" />奥迪</p>
+			<p>你选择的是：{{mycar}}</p>
+		</form>
+	</div>
+	<div ng-controller="myCtrl">
+		<form name="myForm2" novalidate>
+			<p>
+				<label>First Name:</label>
+				<input name="firstName" ng-model="user.firstName" required/>
+				<span ng-show="myForm2.firstName.$error.required">FirstName is Required</span>
+			</p>
+			<p>
+				<label>Last Name:</label>
+				<input name="lastName" ng-model="user.lastName" required/>
+				<span ng-show="myForm2.lastName.$error.required">LastName is Required</span>
+			</p>
+			<p>
+				<label>Email:</label>
+				<input ng-model="myEmail" type="email" name="myEmail" required />
+				<span ng-show="myForm2.myEmail.$touched&&myForm2.myEmail.$invalid" style="color:red;">
+					<span ng-show="myForm2.myEmail.$error.required">Email is Required</span>
+					<!-- 在不满足 required 时 form.myName.$error 为 {required: true} -->
+					<span ng-show="myForm2.myEmail.$error.email">Invalid Email</span>
+				</span>
+			</p>
+			<p>
+				<label>Phone:</label>
+				<input ng-model="myPhone" type="text" required my-val-directive />
+				<span ng-show="myForm2.myPhone.$touched && myForm2.myPhone.$invalid" style="color:red;" >
+					<!-- 在不满足 required 时 form.myName.$error 为 {required: true} -->
+					<span ng-show="myForm2.myPhone.$error.required">Email is Required</span>
+					<!-- myForm2.myPhone.$error.phone是一个自定义的表单验证 -->
+					<span ng-show="myForm2.myPhone.$error.phone">Invalid Email</span>
+				</span>
+			</p>
+			<p><input type="reset" ng-click="reset()"></p>
+			<p>form={{user}}</p>
+			<p>origin={{origin}}</p>
+		</form>
+	</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		var myapp=angular.module("formApp",[]);
+		
+		myapp.controller("myCtrl",function($scope){
+			// $scope.firstName="chen";
+			// $scope.lastName="wenjing";
+			// $scope.reset=function(){
+			// 	$scope.firstName="chen";
+			// 	$scope.lastName="wenjing";
+			// }
+			$scope.origin={"firstName":"chen","lastName":"wenjing"};
+			$scope.reset=function(){
+				$scope.user=angular.copy($scope.origin);
+			};
+			$scope.reset();
+		});
+		
+		// 使用自定义指令验证表单
+		myapp.directive("myValDirective",function(){
+			return {
+				require:"ngModel",//对应link函数的第四个参数
+				link:function(scope,element,attr,ngModel){//这里的ngModel的参数名字是自取的，代表required的值
+					function myValidation(value){
+						if(/^1[358]\d{9}$/.test(value)){
+							ngModel.$setValidity('phone',true);
+						}else{
+							ngModel.$setValidity('phone',false);
+						}
+						return value;
+					}
+					//ng-model指令提供2个由函数组成的数组： parsers和formatters.这些函数用于实现自定义验证逻辑时调用。
+					//当表单input的值被用户修改时，被添加到 parsers中的函数会被立即调用
+					ngModel.$parsers.push(myValidation);
+				}
+			};
+		});
+
+		
+	</script>
+</body>
+</html>

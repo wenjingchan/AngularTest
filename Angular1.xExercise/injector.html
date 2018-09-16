@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>依赖注入</title>
+	<style type="text/css">
+		div{
+			border:1px solid #ccc;
+			margin:20px;
+			padding:10px;
+		}
+	</style>
+</head>
+<body ng-app="myapp">
+	<div ng-controller="appCtrl">
+		<h3>Application Message: </h3>
+			{{message}}
+	</div>
+	<div ng-controller="moduleCtrl">
+		<h3>Module Message: </h3>
+			{{message}}
+	</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		//依赖注入。使用value()也是在添加一种服务
+		var mod=angular.module("mymod",[]);
+		mod.value("modMessage","hello from module");
+		mod.controller("moduleCtrl",function($scope,modMessage){
+			$scope.message=modMessage;
+		});
+
+		var app=angular.module("myapp",["mymod"]);
+		app.value("appMessage","hello from app");
+		app.controller("appCtrl",function($scope,appMessage){
+			$scope.message=appMessage;
+		});
+	</script>
+</body>
+</html>

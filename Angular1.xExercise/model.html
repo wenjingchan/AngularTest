@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ng-model test</title>
+	<style type="text/css">
+		div{
+			border:1px solid #ccc;
+			padding:20px;
+			margin:10px;
+		}
+	</style>
+</head>
+<body ng-app=""><!-- ng-app不能缺 -->
+	<div>
+		<form name="myForm">
+			<label>Email:</label>
+			<input name="emailField" type="email" ng-model="emailField"/>
+			<!--缺少ng-model，ng-show无反应，且ng-model不为空
+				在对表单进行校验的时候会使用 ngModelController 上的属性，如果不设置 ng-model，则 Angular 无法知道 form.$invalid 这个值是否为真。
+			-->
+			<span ng-show="myForm.emailField.$error.email">输入的邮箱不合法</span>
+		</form> 
+	</div>
+	<div>
+		<form name="myForm2" ng-init="emailField2='123456@qq.com'">
+			<label>Email:</label>
+			<input name="emailField2" type="email" ng-model="emailField2" required/>
+			<span ng-show="myForm2.emailField2.$error.email">输入的邮箱不合法</span>
+		</form> 
+		<p>
+			Valid:{{ myForm2.emailField2.$valid }}
+		</p>
+		<p>
+			<label>Dirty:</label><span>{{myForm2.emailField2.$dirty}}</span>
+		</p>
+		<p>
+			<label>Touched:</label><span>{{myForm2.emailField2.$touched}}</span>
+		</p>
+	</div>
+	
+	<script type="text/javascript" src="js/angular.min.js"></script>
+</body>
+</html>

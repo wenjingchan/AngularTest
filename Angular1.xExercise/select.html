@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ng-options && ng-repeat Test</title>
+	<style type="text/css">
+		*{
+			padding:0;
+			margin:0;
+		}
+		.container{
+			border:1px solid #999;
+			padding:20px;
+			margin:10px;
+		}
+	</style>
+</head>
+<body ng-app="myapp" >
+	<div class="container" ng-controller="selectController1">
+		<select ng-model="selectCar">
+			<option ng-repeat="x in mycar" value="{{x.name}}">{{x.brand}}</option>
+		</select>
+		<p>Select Car:{{selectCar}}</p>
+	</div>
+	<div class="container" ng-controller="selectController2">
+		<select ng-options="x for x in mycolor" ng-model="selectColor" ></select>
+		<p>Select Color:{{selectColor}}</p>
+	</div>
+	<div class="container" ng-controller="selectController3" >
+		<select ng-options="car.brand for car in carcolor" ng-model="select"></select>
+		<p>Select:{{select.color}} {{select.name}}</p>
+	</div>
+	<div class="container" ng-controller="selectController4">
+		<select ng-options="y.name for (x,y) in cars" ng-model="selectCar"></select>
+		<p>Select :{{selectCar.color}} {{selectCar.name}}</p>
+	</div>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript">
+		var app=angular.module("myapp",[]);
+
+		//ng-repeat指令
+		app.controller("selectController1",function($scope){
+			$scope.mycar=[
+				{brand:"Benz",name:"奔驰"},
+				{brand:"BMW",name:"宝马"},
+				{brand:"Audi",name:"奥迪"}
+			];
+		});
+		//ng-options指令
+		app.controller("selectController2",function($scope){
+			$scope.mycolor=["Red","Green","Blue"];
+		});
+
+		//ng-options实现数组对象循环
+		app.controller("selectController3",function($scope){
+			$scope.carcolor=[
+				{color:"Red",name:"奔驰",brand:"Benz"},
+				{color:"Green",name:"宝马",brand:"BWM"},
+				{color:"Blue",name:"奥迪",brand:"Audi"}
+			];
+		});
+
+		app.controller("selectController4",function($scope){
+			$scope.cars={
+				Benz:{color:"Red",name:"奔驰"},
+				BWM:{color:"Green",name:"宝马"},
+				Audi:{color:"Blue",name:"奥迪"}
+			};
+		});
+	</script>
+</body>
+</html>

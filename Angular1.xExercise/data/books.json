@@ -1,0 +1,8 @@
+[
+	{"id":"1","name":"活着","author":"余华","price":27,"votes":112,"thumb":"huozhe.jpg"},
+	{"id":"2","name":"解忧杂货店","author":"东野圭吾","price":39,"votes":312,"thumb":"jieyouzahuodian.jpg"},
+	{"id":"3","name":"小王子","author":"安托万·德·圣埃克苏佩里","price":30,"votes":192,"thumb":"xiaowangzi.jpg"},
+	{"id":"4","name":"追风筝的人","author":"卡勒德·胡赛尼","price":19,"votes":552,"thumb":"zhuifengzhengderen.jpg"},
+	{"id":"5","name":"围城","author":"钱钟书","price":24,"votes":312,"thumb":"weicheng.jpg"}
+	
+]
