@@ -1,0 +1,10 @@
+<div id="detail">
+	<p><img ng-src="img/books/{{book.thumb}}"></p>
+	<p>书名: {{book.name}}</p>
+	<p>作者: {{book.author}}</p>
+	<p>价格: {{book.price}}</p>
+	<p>类型: {{book.type}}</p>
+	<p>票数: {{book.votes}}</p>
+	<button type="button" class="btn btn-info" ng-click="vote()" ng-disabled="isVoted">{{voteText}}</button>
+	<button type="button" class="btn btn-default" ><a href="#!/book/list">返回</a></button>
+</div>

@@ -1,0 +1,39 @@
+<div id="list">
+	<div class="form-group">
+		<label>Search:</label>
+		<input type="text" ng-model="searchVal" class="inputText form-control"/>
+	</div>
+	<div class="form-group">
+		<label>Order by:</label>
+		<select ng-model="orderProp" class="inputText form-control">
+			<option value="-votes">票数</option>
+			<option value="name">姓名</option>
+		</select>
+	</div>
+	<div class="clear"></div>
+	<p><a href="#!/book/add" class="">新增图书候选</a></p>
+	<table class="table">
+		<thead>
+			<th></th>
+			<th>书名</th>
+			<th>作者</th>
+			<th>价格</th>
+			<th>类型</th>
+			<th>票数</th>
+			<th>操作</th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="book in books | orderBy: orderProp|filter:searchVal ">
+				<td><img ng-src="img/books/{{book.thumb}}"></td><!-- ng-src指令确保AngularJS代码执行前不显示图片 -->
+				<td><a href="#!/book/detail/{{book.id}}/{{book.name}}">{{book.name}}</a></td>
+				<td>{{book.author}}</td>
+				<td>{{book.price}}</td>
+				<td>{{book.type}}</td>
+				<td>{{book.votes}}</td>
+				<td><a href="#!/book/edit/{{book.id}}">编辑</a>&nbsp;<a ng-click="delBook($event,book.id)">删除</a></td>
+			</tr>
+		</tbody>
+		
+	</table>
+
+</div>

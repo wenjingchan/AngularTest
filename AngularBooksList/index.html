@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>AngularJS Demo Project</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/mystyle.css">
+</head>
+<body ng-app="bookApp">
+	<header>
+		<h3>2018 畅销图书投票</h3>
+	</header>
+	<main>
+		<div  class="content" ng-view></div>
+		<!--路由功能是由 routeProvider服务 和 ng-view 搭配实现，ng-view相当于提供了页面模板的挂载点，当切换URL进行跳转时，不同的页面模板会放在ng-view所在的位置; 然后通过 routeProvider 配置路由的映射。-->
+	</main>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-route.js"></script>
+	<script type="text/javascript" src="app/appRoute.js"></script>
+	<script type="text/javascript" src="app/controller/bookController.js"></script>
+	<script type="text/javascript" src="app/service/bookService.js"></script>
+</body>
+</html>
